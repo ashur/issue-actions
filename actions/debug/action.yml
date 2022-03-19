@@ -2,4 +2,4 @@ name: Debug
 description: Log some stuff about the Actions environment
 runs:
   using: node16
-  main: index.js
+  main: index.cjs
