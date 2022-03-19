@@ -1,0 +1,6 @@
+{
+  "apexskier.eslint.config.eslintConfigPath" : ".eslintrc.cjs",
+  "index.ignored_file_patterns" : [
+    "node_modules"
+  ]
+}

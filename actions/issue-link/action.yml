@@ -1,0 +1,16 @@
+name: Save Link
+description: Convert issue labeled 'link' to JSON data
+runs:
+  using: node16
+  main: index.js
+
+inputs:
+  folder:
+    description: The target output directory for the JSON data file.
+    required: true
+  issue-template:
+    description: The YAML file for the GitHub issue form template
+    required: true
+  hash-property-name:
+    description: The object property to use to generate the has for the file name.
+    required: true
