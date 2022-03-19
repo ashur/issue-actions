@@ -27,9 +27,10 @@ export async function parseIssueBody(githubIssueTemplateFile, body) {
 		return entry === "_No response_" ? "" : entry;
 	});
 
-	// console.log( { fields, bodyData } );
+	let returnObject = {
+		timestamp: Date.now()
+	};
 
-	let returnObject = {};
 	for(let j = 0, k = bodyData.length; j<k; j++) {
 		if(!fields[j]) {
 			continue;
