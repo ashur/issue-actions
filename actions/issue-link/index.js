@@ -25,7 +25,6 @@ export async function issueToJson() {
 			return;
 		}
 
-		// TODO: Might need to adjust this relative path
 		let issueTemplatePath = path.join("./.github/ISSUE_TEMPLATE/", getInput("issue-template"));
 
 		let {title, number, body, user} = github.context.payload.issue;
@@ -36,6 +35,7 @@ export async function issueToJson() {
 
 		let issueData = await parseIssueBody(issueTemplatePath, body);
 
+		issueData.title = title;
 		issueData.opened_by = user.login;
 
 		exportVariable("IssueNumber", number);
