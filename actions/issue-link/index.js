@@ -7,7 +7,7 @@ import path from "node:path";
 import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
-import {parseIssueBody} from "../../src/parse-issue-body";
+import {parseIssueBody} from "./parse-issue-body";
 
 function getFileName(url) {
 	let hash = createHash("sha256");
