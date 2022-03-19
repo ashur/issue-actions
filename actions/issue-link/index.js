@@ -1,5 +1,8 @@
 /* eslint-disable require-jsdoc, camelcase */
 // Adapted from https://github.com/zachleat/github-issue-to-json-file/
+console.log("process.env:", process.env);
+console.log("__dirname", __dirname);
+
 import {writeFile, mkdir} from "node:fs/promises";
 import {createHash} from "node:crypto";
 import path from "node:path";
