@@ -13,6 +13,7 @@ function getFileName(url) {
 
 	let filename = hostname;
 	filename += pathname.length > 1 ? `-${pathname.replace(/\//g, "-")}` : '';
+	filename = filename.replace(/\./g, "-");
 	filename += ".json";
 
 	return filename;
