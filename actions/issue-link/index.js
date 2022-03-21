@@ -10,7 +10,12 @@ import {parseIssueBody} from "./parse-issue-body.js";
 
 function getFileName(url) {
 	const {hostname, pathname} = new URL(url);
-	return `${hostname}-${pathname.replace(/\//g, "-")}.json`;
+
+	let filename = hostname;
+	filename += pathname.length > 1 ? `-${pathname.replace(/\//g, "-")}` : '';
+	filename += ".json";
+
+	return filename;
 }
 
 export async function issueToJson() {
