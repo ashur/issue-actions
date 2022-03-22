@@ -3,8 +3,8 @@ import {createHash} from "node:crypto";
 import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
-import {parseIssueBody} from "../../parse-issue-body.js";
-import {writeData} from "../../write-data.js";
+import {parseIssueBody} from "../../src/parse-issue-body.js";
+import {writeData} from "../../src/write-data.js";
 
 try {
 	/* Parse issue */
