@@ -32,5 +32,6 @@ try {
 	exportVariable("IssueNumber", issue.number);
 }
 catch (error) {
+	console.log(error);
 	setFailed(error.message);
 }
