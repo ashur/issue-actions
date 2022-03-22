@@ -1,4 +1,5 @@
 // Adapted from https://github.com/zachleat/github-issue-to-json-file/
+import {createHash} from "node:crypto";
 import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
@@ -19,9 +20,11 @@ try {
 		(date.getMonth() + 1).toString().padStart(2, "0"),
 	);
 
+	let hash = createHash("sha256");
+	hash.update(pathname);
+
 	let outputFilename = hostname;
-	outputFilename += pathname.length > 1 ? `-${pathname.replace(/\//g, "-")}` : '';
-	outputFilename = outputFilename.replace(/\./g, "-");
+	outputFilename += pathname.length > 1 ? `-${hash.digest("base64url").substr(0, 10)}` : '';
 	outputFilename += ".json";
 
 	writeData(outputDir, outputFilename);
