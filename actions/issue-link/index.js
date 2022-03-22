@@ -10,6 +10,8 @@ try {
 	/* Parse issue */
 	const issue = github.context.payload.issue;
 	const issueData = parseIssueBody(getInput("issue-template"), issue.body);
+	console.log({issueData});
+
 	const {hostname, pathname} = new URL(issueData.url);
 
 	/* Write to disk*/
