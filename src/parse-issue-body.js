@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 // Adapted from https://github.com/zachleat/github-issue-to-json-file/
 import {readFile} from "node:fs/promises";
+import path from "node:path";
 
 import yaml from "js-yaml";
 

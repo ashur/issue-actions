@@ -1,4 +1,5 @@
 import {writeFile, mkdir} from "node:fs/promises";
+import path from "node:path";
 
 /**
  * @param {string} outputDir
