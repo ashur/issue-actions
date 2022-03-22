@@ -15,6 +15,12 @@ import {writeData} from "../../src/write-data.js";
 		const issueData = await parseIssueBody(getInput("issue-template"), issue.body);
 		const {hostname, pathname} = new URL(issueData.url);
 
+		const link = {
+			title: issue.title,
+			createdAt: issue.created_at,
+			...issueData
+		};
+
 		/* Write to disk*/
 		const date = new Date(issue['created_at']);
 		const outputDir = path.join(
@@ -27,7 +33,7 @@ import {writeData} from "../../src/write-data.js";
 		hash.update(pathname);
 		let outputFilename = `${hostname}-${hash.digest("base64url").substr(0, 10)}.json`;
 
-		writeData(outputDir, outputFilename, issueData);
+		writeData(outputDir, outputFilename, link);
 
 		exportVariable("IssueNumber", issue.number);
 	}
