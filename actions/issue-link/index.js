@@ -30,7 +30,7 @@ import {writeData} from "../../src/write-data.js";
 		outputFilename += pathname.length > 1 ? `-${hash.digest("base64url").substr(0, 10)}` : '';
 		outputFilename += ".json";
 
-		writeData(outputDir, outputFilename);
+		writeData(outputDir, outputFilename, issueData);
 
 		exportVariable("IssueNumber", issue.number);
 	}
