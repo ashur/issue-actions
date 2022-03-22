@@ -25,10 +25,7 @@ import {writeData} from "../../src/write-data.js";
 
 		let hash = createHash("sha256");
 		hash.update(pathname);
-
-		let outputFilename = hostname;
-		outputFilename += pathname.length > 1 ? `-${hash.digest("base64url").substr(0, 10)}` : '';
-		outputFilename += ".json";
+		let outputFilename = `${hostname}-${hash.digest("base64url").substr(0, 10)}.json`;
 
 		writeData(outputDir, outputFilename, issueData);
 
