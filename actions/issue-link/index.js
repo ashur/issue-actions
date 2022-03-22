@@ -16,9 +16,7 @@ import {writeData} from "../../src/write-data.js";
 		const {hostname, pathname} = new URL(issueData.url);
 
 		/* Write to disk*/
-		console.log({issue});
-
-		const date = new Date(issue['created_date']);
+		const date = new Date(issue['created_at']);
 		const outputDir = path.join(
 			getInput("folder"),
 			date.getFullYear().toString(),
