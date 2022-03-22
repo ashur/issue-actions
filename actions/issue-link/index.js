@@ -1,5 +1,7 @@
 // Adapted from https://github.com/zachleat/github-issue-to-json-file/
 import {createHash} from "node:crypto";
+import path from "node:path";
+
 import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
