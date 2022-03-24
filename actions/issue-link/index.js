@@ -5,20 +5,21 @@ import path from "node:path";
 import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
-import {parseIssueBody} from "../../src/parse-issue-body.js";
+import {IssueParser} from "../../src/issue-parser.js";
 import {writeData} from "../../src/write-data.js";
 
 (async() => {
 	try {
 		/* Parse issue */
 		const issue = github.context.payload.issue;
-		const issueData = await parseIssueBody(getInput("issue-template"), issue.body);
-		const {hostname, pathname} = new URL(issueData.url);
+
+		const issueParser = new IssueParser();
+		const bodyData = await issueParser.parseBody(issue.body, getInput("issue-template"));
 
 		const link = {
 			title: issue.title,
 			createdAt: issue.created_at,
-			...issueData
+			...bodyData
 		};
 
 		/* Write to disk*/
@@ -28,6 +29,8 @@ import {writeData} from "../../src/write-data.js";
 			date.getFullYear().toString(),
 			(date.getMonth() + 1).toString().padStart(2, "0"),
 		);
+
+		const {hostname, pathname} = new URL(bodyData.url);
 
 		let hash = createHash("sha256");
 		hash.update(pathname);
