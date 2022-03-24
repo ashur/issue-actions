@@ -4,6 +4,12 @@ title: "[Example]"
 labels: ["link"]
 body:
   - type: input
+    id: optionalValue
+    attributes:
+      label: Optional Value
+    validations:
+      required: false
+  - type: input
     id: url
     attributes:
       label: URL
