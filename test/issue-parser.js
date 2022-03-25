@@ -67,6 +67,17 @@ describe('IssueParser', () =>
 			assert.isObject(bodyData);
 			assert.doesNotHaveAnyKeys(bodyData, ['description']);
 		});
+
+		it('should support image markup', async () => {
+			const issueParser = new IssueParser(issueTemplatesDir);
+			const issueBody = '### Image\n\n![image_alt](https://user-images.githubusercontent.com/1234/5678-90abc-def.jpg)';
+
+			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
+
+			assert.isObject(bodyData);
+			assert.hasAllKeys(bodyData, ['image']);
+			assert.equal(bodyData.image, '![image_alt](https://user-images.githubusercontent.com/1234/5678-90abc-def.jpg)');
+		});
 	});
 });
 

@@ -89,7 +89,7 @@ export class IssueParser
  */
 const getNodeValue = (node, formatter) =>
 {
-	if (node.value) {
+	if (node.value || node.type === 'image') {
 		return formatter(node);
 	}
 
@@ -109,6 +109,7 @@ const markdownFormatter = (node) => {
 		code: '```\n%v\n```\n',
 		emphasis: '_%v_',
 		heading: '%d %v\n',
+		image: '![%a](%u)',
 		inlineCode: '`%v`',
 		link: '[%v](%u)',
 		list: '%v',
@@ -122,12 +123,13 @@ const markdownFormatter = (node) => {
 		.replace('%v', node.value ?
 			node.value :
 			node.children
-				.map(node => getNodeValue(node, markdownFormatter))
+				?.map(node => getNodeValue(node, markdownFormatter))
 				.join('')
 		)
 		.replace(/\%d/g, ''.padStart(node.depth, '#'))
 		.replace(/\%u/g, node.url)
-		.replace(/\%i/g, node.parent?.ordered ? '1.' : '-' )
+		.replace(/\%i/g, node.parent?.ordered ? '1.' : '-')
+		.replace(/\%a/g, node.alt)
 }
 
 /**

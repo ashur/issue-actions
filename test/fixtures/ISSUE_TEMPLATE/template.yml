@@ -22,3 +22,8 @@ body:
       label: Description
     validations:
       required: true
+  - type: markdown
+    id: image
+    attributes:
+      label: Image
+      value: "### Image\n\n> Optional, should be attached after the issue is created"
