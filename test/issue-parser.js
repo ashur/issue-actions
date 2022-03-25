@@ -37,5 +37,16 @@ describe('IssueParser', () =>
 			assert.isObject(bodyData);
 			assert.equal(bodyData.description, 'Lorem ipsum _dolor_ **sit amet**.', 'description');
 		});
+
+		it('should not include values whose heading is undefined', async () => {
+			const issueParser = new IssueParser(issueTemplatesDir);
+			const issueBody = '### Description\n\nLorem ipsum _dolor_ **sit amet**.\n\n### Added Later\n\nThis section was added manually.';
+
+			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
+
+			assert.isObject(bodyData);
+			assert.hasAllKeys(bodyData, ['description']);
+		});
 	});
 });
+

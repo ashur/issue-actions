@@ -26,7 +26,7 @@ export class IssueParser
 	}
 
 	/**
-	 * Parse issue body, return object with
+	 * Parse issue body, return object with values matching template
 	 * @async
 	 * @param {string} issueBody
 	 * @param {string} templateName
@@ -60,7 +60,9 @@ export class IssueParser
 			let nextNode = nodes.children[index+1];
 			if ((nextNode && nextNode.type === 'heading') || index === nodes.children.length - 1)
 			{
-				body[inputMap[section.label]] = children.join("\n\n");
+				if (inputMap[section.label]) {
+					body[inputMap[section.label]] = children.join("\n\n");
+				}
 
 				if (index < nodes.children.length)
 				{
