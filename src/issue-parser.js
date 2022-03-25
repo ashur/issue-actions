@@ -10,6 +10,7 @@ export class IssueParser
 	 */
 	constructor(issueTemplatesDir)
 	{
+		this.ignoredValues = ["_No response_"];
 		this.issueTemplatesDir = issueTemplatesDir || './.github/ISSUE_TEMPLATE';
 	}
 
@@ -37,6 +38,7 @@ export class IssueParser
 		const templateDefinition = await this.parseTemplate(templateName);
 
 		// Map input labels to IDs
+		// ex., {'Contact Details': 'contact'}
 		const inputMap = {};
 		templateDefinition.body.forEach(input => {
 			inputMap[input.attributes.label] = input.id;
@@ -54,13 +56,16 @@ export class IssueParser
 				section.label = getNodeValue(node, textFormatter);
 			}
 			else {
-				children.push(getNodeValue(node, markdownFormatter).trim());
+				const nodeValue = getNodeValue(node, markdownFormatter).trim();
+				if (!this.ignoredValues.includes(nodeValue)) {
+					children.push(nodeValue);
+				}
 			}
 
 			let nextNode = nodes.children[index+1];
 			if ((nextNode && nextNode.type === 'heading') || index === nodes.children.length - 1)
 			{
-				if (inputMap[section.label]) {
+				if (inputMap[section.label] && children.length > 0) {
 					body[inputMap[section.label]] = children.join("\n\n");
 				}
 

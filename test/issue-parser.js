@@ -47,6 +47,26 @@ describe('IssueParser', () =>
 			assert.isObject(bodyData);
 			assert.hasAllKeys(bodyData, ['description']);
 		});
+
+		it('should not include empty sections', async () => {
+			const issueParser = new IssueParser(issueTemplatesDir);
+			const issueBody = '### URL\n\n### Description\n\nLorem ipsum _dolor_ **sit amet**';
+
+			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
+
+			assert.isObject(bodyData);
+			assert.doesNotHaveAnyKeys(bodyData, ['url']);
+		});
+
+		it('should not include "no response" values', async () => {
+			const issueParser = new IssueParser(issueTemplatesDir);
+			const issueBody = '### Description\n\n_No response_';
+
+			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
+
+			assert.isObject(bodyData);
+			assert.doesNotHaveAnyKeys(bodyData, ['description']);
+		});
 	});
 });
 
