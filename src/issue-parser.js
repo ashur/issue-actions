@@ -58,8 +58,11 @@ export class IssueParser
 				section.label = getNodeValue(node, textFormatter);
 			}
 			else {
-				const nodeValue = getNodeValue(node, markdownFormatter, (node, nodeValue) => {
+				const nodeValue = getNodeValue(node, markdownFormatter, (node) => {
 					if (node.type === "image") {
+						if (!node.alt) {
+							throw new Error(`Image missing alt attribute: '${node.url}'`);
+						}
 						body._metadata.images = body._metadata.images || [];
 						body._metadata.images.push({
 							alt: node.alt,

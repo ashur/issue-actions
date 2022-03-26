@@ -82,7 +82,6 @@ describe('IssueParser', () =>
 			const issueBody = '### Description\n\n![image_alt_1](https://example.com/1.jpg)\n\n![image_alt_2](https://example.com/2.jpg)';
 
 			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
-
 			assert.deepEqual(bodyData._metadata, {
 				images: [
 					{
@@ -96,6 +95,19 @@ describe('IssueParser', () =>
 				]
 			});
 		});
+
+		it('should throw Error if image missing alt', async () => {
+			const issueParser = new IssueParser(issueTemplatesDir);
+			const issueBody = '### Description\n\n![](https://example.com/1.jpg)';
+
+			try {
+				await issueParser.parseBody(issueBody, 'template.yml');
+				assert.isTrue(false, 'Did throw an error');
+			}
+			catch (error) {
+				assert.isTrue(true, 'Did throw an error');
+				assert.equal(error.message, "Image missing alt attribute: 'https://example.com/1.jpg'");
+			}
+		});
 	});
 });
-
