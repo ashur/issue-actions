@@ -1,3 +1,4 @@
+import camelcase from 'camelcase';
 import fs from 'fs/promises';
 import path from 'node:path';
 import yaml from 'js-yaml';
@@ -78,8 +79,10 @@ export class IssueParser
 			let nextNode = nodes.children[index+1];
 			if ((nextNode && nextNode.type === 'heading') || index === nodes.children.length - 1)
 			{
-				if (inputMap[section.label] && children.length > 0) {
-					body[inputMap[section.label]] = children.join("\n\n");
+				// Use template-defined `id` if available, otherwise fall back to camelcase heading
+				const key = inputMap[section.label] || camelcase(section.label);
+				if (children.length > 0) {
+					body[key] = children.join("\n\n");
 				}
 
 				if (index < nodes.children.length)

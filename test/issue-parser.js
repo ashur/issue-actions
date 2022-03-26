@@ -38,14 +38,14 @@ describe('IssueParser', () =>
 			assert.equal(bodyData.description, 'Lorem ipsum _dolor_ **sit amet**.', 'description');
 		});
 
-		it('should not include values whose heading is undefined', async () => {
+		it('should fall back to camelcase heading for data key if no match found in input map', async () => {
 			const issueParser = new IssueParser(issueTemplatesDir);
 			const issueBody = '### Description\n\nLorem ipsum _dolor_ **sit amet**.\n\n### Added Later\n\nThis section was added manually.';
 
 			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
 
 			assert.isObject(bodyData);
-			assert.hasAllKeys(bodyData, ['_metadata', 'description']);
+			assert.equal(bodyData.addedLater, 'This section was added manually.');
 		});
 
 		it('should not include empty sections', async () => {
