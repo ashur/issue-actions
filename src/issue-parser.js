@@ -95,10 +95,10 @@ export class IssueParser
 }
 
 /**
- * Convert node contents to string using formatter
+ * Synthesize value of node and its children to a single string using formatter
  * @param {Object} node
  * @param {Function} formatter - ex., 'markdown'
- * @param {Function} callback
+ * @param {Function} callback - Receives `node` and `nodeValue` as parameters, useful for accessing information about child nodes.
  * @returns {string}
  */
 const getNodeValue = (node, formatter, callback) =>
