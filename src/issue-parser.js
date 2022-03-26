@@ -45,7 +45,9 @@ export class IssueParser
 		});
 
 		// Parse body nodes
-		const body = {};
+		const body = {
+			_metadata: {},
+		};
 
 		let children = [];
 		let section = {};
@@ -56,7 +58,15 @@ export class IssueParser
 				section.label = getNodeValue(node, textFormatter);
 			}
 			else {
-				const nodeValue = getNodeValue(node, markdownFormatter).trim();
+				const nodeValue = getNodeValue(node, markdownFormatter, (node, nodeValue) => {
+					if (node.type === "image") {
+						body._metadata.images = body._metadata.images || [];
+						body._metadata.images.push({
+							alt: node.alt,
+							src: node.url,
+						});
+					}
+				}).trim();
 				if (!this.ignoredValues.includes(nodeValue)) {
 					children.push(nodeValue);
 				}
@@ -85,25 +95,32 @@ export class IssueParser
  * Convert node contents to string using formatter
  * @param {Object} node
  * @param {Function} formatter - ex., 'markdown'
+ * @param {Function} callback
  * @returns {string}
  */
-const getNodeValue = (node, formatter) =>
+const getNodeValue = (node, formatter, callback) =>
 {
+	const nodeValue = formatter(node, callback);
+	if (callback) {
+		callback(node, nodeValue);
+	}
+
 	if (node.value || node.type === 'image') {
-		return formatter(node);
+		return nodeValue;
 	}
 
 	if (node.children) {
 		node.children.forEach( (child) => child.parent = node );
-		return formatter(node);
+		return nodeValue;
 	}
 }
 
 /**
  * @param {Object} node
+ * @param {Function} callback
  * @returns {string}
  */
-const markdownFormatter = (node) => {
+const markdownFormatter = (node, callback) => {
 	const MAP = {
 		blockquote: '> %v',
 		code: '```\n%v\n```\n',
@@ -123,7 +140,7 @@ const markdownFormatter = (node) => {
 		.replace('%v', node.value ?
 			node.value :
 			node.children
-				?.map(node => getNodeValue(node, markdownFormatter))
+				?.map(node => getNodeValue(node, markdownFormatter, callback))
 				.join('')
 		)
 		.replace(/\%d/g, ''.padStart(node.depth, '#'))

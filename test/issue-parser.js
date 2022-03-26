@@ -45,7 +45,7 @@ describe('IssueParser', () =>
 			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
 
 			assert.isObject(bodyData);
-			assert.hasAllKeys(bodyData, ['description']);
+			assert.hasAllKeys(bodyData, ['_metadata', 'description']);
 		});
 
 		it('should not include empty sections', async () => {
@@ -68,15 +68,33 @@ describe('IssueParser', () =>
 			assert.doesNotHaveAnyKeys(bodyData, ['description']);
 		});
 
-		it('should support image markup', async () => {
+		it('should return metadata property', async () => {
 			const issueParser = new IssueParser(issueTemplatesDir);
-			const issueBody = '### Image\n\n![image_alt](https://user-images.githubusercontent.com/1234/5678-90abc-def.jpg)';
+			const issueBody = '### Description\n\nLorem ipsum dolor sit amet';
 
 			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
 
-			assert.isObject(bodyData);
-			assert.hasAllKeys(bodyData, ['image']);
-			assert.equal(bodyData.image, '![image_alt](https://user-images.githubusercontent.com/1234/5678-90abc-def.jpg)');
+			assert.deepEqual(bodyData._metadata, {});
+		});
+
+		it('should collect images in metadata', async () => {
+			const issueParser = new IssueParser(issueTemplatesDir);
+			const issueBody = '### Description\n\n![image_alt_1](https://example.com/1.jpg)\n\n![image_alt_2](https://example.com/2.jpg)';
+
+			const bodyData = await issueParser.parseBody(issueBody, 'template.yml');
+
+			assert.deepEqual(bodyData._metadata, {
+				images: [
+					{
+						alt: 'image_alt_1',
+						src: 'https://example.com/1.jpg',
+					},
+					{
+						alt: 'image_alt_2',
+						src: 'https://example.com/2.jpg',
+					},
+				]
+			});
 		});
 	});
 });
