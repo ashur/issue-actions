@@ -34,7 +34,9 @@ import {writeData} from "../../src/write-data.js";
 
 		let hash = createHash("sha256");
 		hash.update(pathname);
-		let outputFilename = `${hostname}-${hash.digest("base64url").substr(0, 10)}.json`;
+
+		const filenameStem = hostname.replace('www.', '');
+		let outputFilename = `${filenameStem}-${hash.digest("base64url").substr(0, 10)}.json`;
 
 		writeData(outputDir, outputFilename, link);
 
