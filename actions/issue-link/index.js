@@ -41,6 +41,7 @@ import {writeData} from "../../src/write-data.js";
 		writeData(outputDir, outputFilename, link);
 
 		exportVariable("IssueNumber", issue.number);
+		exportVariable("IssueTitle", issue.title);
 	}
 	catch (error) {
 		console.log(error);
