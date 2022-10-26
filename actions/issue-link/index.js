@@ -20,6 +20,7 @@ import {writeData} from "../../src/write-data.js";
 		const link = {
 			title: issue.title,
 			createdAt: issue.created_at,
+			labels: issue.labels,
 			...bodyData,
 		};
 
