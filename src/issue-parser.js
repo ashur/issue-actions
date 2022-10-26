@@ -1,8 +1,8 @@
-import camelcase from 'camelcase';
-import fs from 'fs/promises';
-import path from 'node:path';
-import yaml from 'js-yaml';
-import {fromMarkdown} from 'mdast-util-from-markdown';
+import camelcase from "camelcase";
+import fs from "fs/promises";
+import path from "node:path";
+import yaml from "js-yaml";
+import {fromMarkdown} from "mdast-util-from-markdown";
 
 export class IssueParser
 {
@@ -12,7 +12,7 @@ export class IssueParser
 	constructor(issueTemplatesDir)
 	{
 		this.ignoredValues = ["_No response_"];
-		this.issueTemplatesDir = issueTemplatesDir || './.github/ISSUE_TEMPLATE';
+		this.issueTemplatesDir = issueTemplatesDir || "./.github/ISSUE_TEMPLATE";
 	}
 
 	/**
@@ -41,7 +41,7 @@ export class IssueParser
 		// Map input labels to IDs
 		// ex., {'Contact Details': 'contact'}
 		const inputMap = {};
-		templateDefinition.body.forEach(input => {
+		templateDefinition.body.forEach((input) => {
 			inputMap[input.attributes.label] = input.id;
 		});
 
@@ -55,7 +55,7 @@ export class IssueParser
 
 		let nodes = fromMarkdown(issueBody);
 		nodes.children.forEach((node, index) => {
-			if (node.type === 'heading') {
+			if (node.type === "heading") {
 				section.label = getNodeValue(node, textFormatter);
 			}
 			else {
@@ -77,7 +77,7 @@ export class IssueParser
 			}
 
 			let nextNode = nodes.children[index+1];
-			if ((nextNode && nextNode.type === 'heading') || index === nodes.children.length - 1)
+			if ((nextNode && nextNode.type === "heading") || index === nodes.children.length - 1)
 			{
 				// Use template-defined `id` if available, otherwise fall back to camelcase heading
 				const key = inputMap[section.label] || camelcase(section.label);
@@ -111,7 +111,7 @@ const getNodeValue = (node, formatter, callback) =>
 		callback(node, nodeValue);
 	}
 
-	if (node.value || node.type === 'image') {
+	if (node.value || node.type === "image") {
 		return nodeValue;
 	}
 
@@ -128,31 +128,31 @@ const getNodeValue = (node, formatter, callback) =>
  */
 const markdownFormatter = (node, callback) => {
 	const MAP = {
-		blockquote: '> %v',
-		code: '```\n%v\n```\n',
-		emphasis: '_%v_',
-		heading: '%d %v\n',
-		image: '![%a](%u)',
-		inlineCode: '`%v`',
-		link: '[%v](%u)',
-		list: '%v',
-		listItem: '%i %v',
-		paragraph: '%v\n',
-		strong: '**%v**',
-		text: '%v',
+		blockquote: "> %v",
+		code: "```\n%v\n```\n",
+		emphasis: "_%v_",
+		heading: "%d %v\n",
+		image: "![%a](%u)",
+		inlineCode: "`%v`",
+		link: "[%v](%u)",
+		list: "%v",
+		listItem: "%i %v",
+		paragraph: "%v\n",
+		strong: "**%v**",
+		text: "%v",
 	};
 
 	return MAP[node.type]
-		.replace('%v', node.value ?
+		.replace("%v", node.value ?
 			node.value :
 			node.children
-				?.map(node => getNodeValue(node, markdownFormatter, callback))
-				.join('')
+				?.map((node) => getNodeValue(node, markdownFormatter, callback))
+				.join(""),
 		)
-		.replace(/\%d/g, ''.padStart(node.depth, '#'))
-		.replace(/\%u/g, node.url)
-		.replace(/\%i/g, node.parent?.ordered ? '1.' : '-')
-		.replace(/\%a/g, node.alt)
+		.replace(/%d/g, "".padStart(node.depth, "#"))
+		.replace(/%u/g, node.url)
+		.replace(/%i/g, node.parent?.ordered ? "1." : "-")
+		.replace(/%a/g, node.alt)
 }
 
 /**
@@ -163,6 +163,6 @@ const textFormatter = (node) => {
 	return node.value ?
 		node.value :
 		node.children
-			.map(node => getNodeValue(node, textFormatter))
-			.join('')
+			.map((node) => getNodeValue(node, textFormatter))
+			.join("")
 }

@@ -20,11 +20,11 @@ import {writeData} from "../../src/write-data.js";
 		const link = {
 			title: issue.title,
 			createdAt: issue.created_at,
-			...bodyData
+			...bodyData,
 		};
 
 		/* Write to disk */
-		const date = new Date(issue['created_at']);
+		const date = new Date(issue["created_at"]);
 		const outputDir = path.join(
 			getInput("folder"),
 			date.getFullYear().toString(),
@@ -36,7 +36,7 @@ import {writeData} from "../../src/write-data.js";
 		let hash = createHash("sha256");
 		hash.update(pathname);
 
-		const filenameStem = hostname.replace('www.', '');
+		const filenameStem = hostname.replace("www.", "");
 		let outputFilename = `${filenameStem}-${hash.digest("base64url").substr(0, 10)}.json`;
 
 		writeData(outputDir, outputFilename, link);
