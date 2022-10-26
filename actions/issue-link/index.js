@@ -17,10 +17,13 @@ import {writeData} from "../../src/write-data.js";
 		const issueParser = new IssueParser();
 		const bodyData = await issueParser.parseBody(issue.body, getInput("issue-template"));
 
+		const tags = issue.labels?.filter( (label) => label.name.startsWith( "tag:" ) )
+			.map( (label) => label.name.replace( "tag:", "" ) );
+
 		const link = {
 			title: issue.title,
 			createdAt: issue.created_at,
-			labels: issue.labels,
+			tags,
 			...bodyData,
 		};
 
