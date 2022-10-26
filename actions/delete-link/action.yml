@@ -1,0 +1,10 @@
+name: Delete Link
+description: Delete data file associated with issue
+runs:
+  using: node16
+  main: index.js
+
+inputs:
+  folder:
+    description: The target output directory for the JSON data file.
+    required: true
