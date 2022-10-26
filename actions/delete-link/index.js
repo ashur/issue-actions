@@ -4,6 +4,9 @@ import path from "node:path";
 import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
+import {readData} from "../../src/read-data.js";
+import {writeData} from "../../src/write-data.js";
+
 (async() => {
 	try {
 		const issue = github.context.payload.issue;
