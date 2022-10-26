@@ -6,6 +6,7 @@ import {getInput, exportVariable, setFailed} from "@actions/core";
 import * as github from "@actions/github";
 
 import {IssueParser} from "../../src/issue-parser.js";
+import {readData} from "../../src/read-data.js";
 import {writeData} from "../../src/write-data.js";
 
 (async() => {
@@ -22,7 +23,7 @@ import {writeData} from "../../src/write-data.js";
 			...bodyData
 		};
 
-		/* Write to disk*/
+		/* Write to disk */
 		const date = new Date(issue['created_at']);
 		const outputDir = path.join(
 			getInput("folder"),
@@ -39,6 +40,13 @@ import {writeData} from "../../src/write-data.js";
 		let outputFilename = `${filenameStem}-${hash.digest("base64url").substr(0, 10)}.json`;
 
 		writeData(outputDir, outputFilename, link);
+
+		/* Update data index */
+		const indexFilename = path.join( getInput("folder"), "index.json" );
+		const indexData = readData( indexFilename );
+
+		indexData[issue.number] = path.join( outputDir, outputFilename );
+		writeData( getInput("folder"), "index.json", indexData );
 
 		exportVariable("IssueNumber", issue.number);
 		exportVariable("IssueTitle", issue.title);
