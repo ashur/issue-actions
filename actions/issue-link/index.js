@@ -43,7 +43,7 @@ import {writeData} from "../../src/write-data.js";
 
 		/* Update data index */
 		const indexFilename = path.join( getInput("folder"), "index.json" );
-		const indexData = readData( indexFilename );
+		const indexData = await readData( indexFilename );
 
 		indexData[issue.number] = path.join( outputDir, outputFilename );
 		writeData( getInput("folder"), "index.json", indexData );

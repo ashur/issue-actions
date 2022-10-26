@@ -3,6 +3,7 @@ import path from "node:path";
 
 /**
  * @param {string} inputFilename
+ * @return {Promise<Object>}
  */
 export async function readData(inputFilename) {
 	try
