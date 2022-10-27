@@ -18,8 +18,9 @@ import {writeData} from "../../src/write-data.js";
 		const bodyData = await issueParser.parseBody(issue.body, getInput("issue-template"));
 
 		const note = {
-			title: issue.title,
 			createdAt: issue.created_at,
+			issue: issue.number,
+			title: issue.title,
 			...bodyData,
 		};
 

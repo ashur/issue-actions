@@ -21,9 +21,10 @@ import {writeData} from "../../src/write-data.js";
 			.map( (label) => label.name.replace( "tag:", "" ) );
 
 		const link = {
-			title: issue.title,
 			createdAt: issue.created_at,
+			issue: issue.number,
 			tags,
+			title: issue.title,
 			...bodyData,
 		};
 
