@@ -1,0 +1,13 @@
+name: Save Issue
+description: Convert a GitHub issue to JSON data
+runs:
+  using: node16
+  main: index.js
+
+inputs:
+  folder:
+    description: The target output directory for the JSON data file.
+    required: true
+  issue-template:
+    description: The YAML file for the GitHub issue form template
+    required: true
