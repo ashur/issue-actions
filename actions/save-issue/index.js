@@ -38,7 +38,7 @@ import slugify from "../../src/slugify.js";
 		);
 
 		let hash = createHash("sha256");
-		hash.update(date);
+		hash.update(date.toString());
 
 		const filenameStem = slugify(issue.title);
 		let outputFilename = `${filenameStem}-${hash.digest("base64url").substr(0, 10)}.json`;
